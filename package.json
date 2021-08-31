@@ -1,0 +1,34 @@
+{
+  "name": "@purpleboost/authkeys",
+  "version": "0.2.4",
+  "description": "🗝️ Create API & Server keys with Roles and CustomData 🗝️",
+  "main": "index.js",
+  "scripts": {
+    "test": "node test.js",
+    "generate-docs": "npx jsdoc2md index.js -m --separators > API.md"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/purpleboost/authkeys.git"
+  },
+  "keywords": [
+    "keymanager",
+    "server",
+    "api",
+    "authkey"
+  ],
+  "author": "Angel Rodriguez <xangelrodriguez99@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/purpleboost/authkeys/issues"
+  },
+  "homepage": "https://github.com/purpleboost/authkeys#readme",
+  "dependencies": {
+    "app-root-path": "^3.0.0",
+    "colors": "^1.4.0",
+    "url-pattern": "^1.0.3"
+  },
+  "devDependencies": {
+    "express": "^4.17.1"
+  }
+}
