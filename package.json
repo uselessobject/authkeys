@@ -1,7 +1,7 @@
 {
   "name": "@purpleboost/authkeys",
   "version": "0.2.4",
-  "description": "🗝️ Create API & Server keys with Roles and CustomData 🗝️",
+  "description": "🗝️ Create API & Server keys with Permissions and CustomData 🗝️",
   "main": "index.js",
   "scripts": {
     "test": "node test.js",
