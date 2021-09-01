@@ -14,6 +14,7 @@ let isValidPath = require('is-valid-path') ;
 /**
  * Create a new AuthKey instance directly from a method.
  * @param {String} [str] - The value of the key to work like a index value.
+ * @returns {AuthKey}
  * @see {@link #authkeys~AuthKey} to see all parameters and execution ways.
  * @example
  * // This will generate a key with a random index value (sha256 hash).

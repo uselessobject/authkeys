@@ -6,7 +6,7 @@
 
 * [authkeys](#module_authkeys)
     * _static_
-        * [.createKey([str])](#module_authkeys.createKey)
+        * [.createKey([str])](#module_authkeys.createKey) ⇒ <code>AuthKey</code>
         * [.createKey([str], algorithm)](#module_authkeys.createKey)
         * [.parseKey(obj)](#module_authkeys.parseKey) ⇒ <code>AuthKey</code>
         * [.loadKey(file)](#module_authkeys.loadKey) ⇒ <code>AuthKey</code>
@@ -35,7 +35,7 @@
 
 <a name="module_authkeys.createKey"></a>
 
-### authkeys.createKey([str])
+### authkeys.createKey([str]) ⇒ <code>AuthKey</code>
 Create a new AuthKey instance directly from a method.
 
 **Kind**: static method of [<code>authkeys</code>](#module_authkeys)  
