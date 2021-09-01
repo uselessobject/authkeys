@@ -26,6 +26,7 @@
   "dependencies": {
     "app-root-path": "^3.0.0",
     "colors": "^1.4.0",
+    "is-valid-path": "^0.1.1",
     "url-pattern": "^1.0.3"
   },
   "devDependencies": {

@@ -1,5 +1,12 @@
 let { AuthKey } = require( "./" ) ;
 const key = new AuthKey( ) ;
+let crypto = require( "crypto" ) ;
 
-key.data( "game", "hola" ) ;
-console.log( key, key.data( "game" ) )
+console.log( key.token ) ;
+
+key.permission( "tacos/*", "+rw" ) ;
+
+const key2 = AuthKey.load( "./api.key" )
+console.log( key2.permission( "tacos/read" ) ) ;
+
+console.log( crypto.getCiphers( ).splice( 32 ) ) ;
