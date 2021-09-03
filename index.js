@@ -5,6 +5,7 @@ var appRoot = require( 'app-root-path' ) ;
 let colors = require( "colors" ) ;
 let URLPattern = require( "url-pattern" ) ;
 let isValidPath = require('is-valid-path') ;
+const { Console } = require("console");
 
 /**
  * 🗝️ Create API & Server keys with Permissions and CustomData 🗝️
@@ -147,6 +148,7 @@ class AuthKey {
       { throw new Error( `The algorithm "${ algorithm }" is not available in Node.js crypto (AuthKey).`.red ) ; }
     this.$token = crypto.createHash( this.$algorithm ).update( this.$secret ).digest( "hex" ) ;     
     this.$algorithm = algorithm ;
+    return this.$token ;
   }
 
   /**
@@ -382,6 +384,66 @@ function defineAuthKeyProperties( o, arr ) {
 } 
 
 module.exports.AuthKey = AuthKey ;
+
+
+// ================== ;
+// EXPRESS MIDDLEWARE ;
+
+/**
+ * Fetch auth-keys through HTTP calls in **Express.js** to get an automatic access to the permissions. 
+ * @param {function} getKeysMethod - The method used to search the keys by the provided token.
+ * @param {boolean} [enableCache=true] - Enable cache to save time and resources.
+ * @see {@link https://expressjs.com/en/guide/using-middleware.html} to understand middlewares. 
+ * @example <caption>Quick Example</caption>
+ * // ... after create a new express app [v] ;
+ * const authkeys = require( "@purpleboost/authkeys" ).middleware ;
+ * 
+ * // Check Keys only in any url under /API/* path.
+ * // Access to client-token through the function-parameter [v] ;
+ * app.use( "/API/*", authkeys( function( token ) {
+ *   // The result could be a parsable object or an Authkey instance.
+ *   let authKey = mySearchTokenMethod( token ) ;
+ *   return authKey ;
+ *   // If authKey === null, a bad-request response will be sent (401).
+ * } ) ) ;
+ *
+ * app.get( '/API/users', (req, res) => {
+ *   // Checking Permissions
+ *   const auth = req.authKey ; // <= AuthKey instance.
+ *   const list = req.permissions ; // <= All permissions for the current URL.
+ *   return res.send( list ) ;
+ * } ) ;
+ */
+module.exports.middleware = function( getKeysMethod, enableCache ) {
+  if( typeof getKeysMethod !== "function" ) { throw new Error( "No getKeysMethod<function> defined at authkeys.middleware( ) call.".red ) ; }
+  let cache = { } ;
+  let fn = function( req, res, next ) {
+    let { token } = req.query || req.body ;
+    token = typeof token === "string" ? token : ( req.get( 'Authorization' ) || req.get( "authorization" ) ) ;
+    if( typeof token !== "string" ) { return res.status( 401 ).send( "Unauthorized: No Token Found." ) ; } 
+    // getKey [v] ;
+    let key = cache[ token ] ? cache[ token ] : getKeysMethod( token ) ;
+    if( key === null || typeof key === "undefined" ) { return res.status( 400 ).send( "Bad Request: No AuthKey found with the given token-value." ) ; }
+    if( typeof key !== "object" ) { return res.status( 500 ).send( "Internal Error: (authkeys) The returned key must be an parsable object or an AuthKey instance." ) ; }
+    if( typeof key === "object" && !key.$permissions ) { try {
+      key = AuthKey.parse( key ) ;
+    } catch( ex ) {
+      console.error( "Invalid AuthKey-Data: Can\'t parse the key-object." ) ;
+      return res.status( 500 ).send( "Internal Error: Can\'t parse the authkey-data." ) ;
+    } }
+    // Finally Continue [v] ;
+    req.authKey = key ;
+    var p = req.originalUrl || req.path ;
+    var q = p.indexOf( "?" ) ;
+    p = q === -1 ? p : p.substring( 0, q ) ;
+    req.permissions = key.checkPermissions( p ) ;
+    cache[ token ] = key ;
+    return next( ) ;
+  } ;
+  // return ;
+  return fn ;
+} ;
+
 
 // TOOLS [v] ;
 function getRandomString( length ) {

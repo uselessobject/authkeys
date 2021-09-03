@@ -10,6 +10,7 @@
         * [.createKey([str], algorithm)](#module_authkeys.createKey)
         * [.parseKey(obj)](#module_authkeys.parseKey) ⇒ <code>AuthKey</code>
         * [.loadKey(file)](#module_authkeys.loadKey) ⇒ <code>AuthKey</code>
+        * [.middleware(getKeysMethod, [enableCache])](#module_authkeys.middleware)
     * _inner_
         * [~AuthKey](#module_authkeys..AuthKey)
             * [new AuthKey([str], [algorithm])](#new_module_authkeys..AuthKey_new)
@@ -94,6 +95,43 @@ Load a key from a file saved with *authKey.save( )* method.
 | --- | --- | --- |
 | file | <code>string</code> | The path of the file with all *hex* data. |
 
+
+* * *
+
+<a name="module_authkeys.middleware"></a>
+
+### authkeys.middleware(getKeysMethod, [enableCache])
+Fetch auth-keys through HTTP calls in **Express.js** to get an automatic access to the permissions.
+
+**Kind**: static method of [<code>authkeys</code>](#module_authkeys)  
+**See**: [https://expressjs.com/en/guide/using-middleware.html](https://expressjs.com/en/guide/using-middleware.html) to understand middlewares.  
+
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| getKeysMethod | <code>function</code> |  | The method used to search the keys by the provided token. |
+| [enableCache] | <code>boolean</code> | <code>true</code> | Enable cache to save time and resources. |
+
+**Example** *(Quick Example)*  
+```js
+// ... after create a new express app [v] ;
+const authkeys = require( "@purpleboost/authkeys" ).middleware ;
+
+// Check Keys only in any url under /API/* path.
+// Access to client-token through the function-parameter [v] ;
+app.use( "/API/*", authkeys( function( token ) {
+  // The result could be a parsable object or an Authkey instance.
+  let authKey = mySearchTokenMethod( token ) ;
+  return authKey ;
+  // If authKey === null, a bad-request response will be sent (401).
+} ) ) ;
+
+app.get( '/API/users', (req, res) => {
+  // Checking Permissions
+  const auth = req.authKey ; // <= AuthKey instance.
+  const list = req.permissions ; // <= All permissions for the current URL.
+  return res.send( list ) ;
+} ) ;
+```
 
 * * *
 
