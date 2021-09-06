@@ -1,5 +1,5 @@
 {
-  "name": "@purpleboost/authkeys",
+  "name": "@fireboost/authkeys",
   "version": "0.2.4",
   "description": "🗝️ Create API & Server keys with Permissions and CustomData 🗝️",
   "main": "index.js",
@@ -9,7 +9,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/purpleboost/authkeys.git"
+    "url": "git+https://github.com/fireboost/authkeys.git"
   },
   "keywords": [
     "keymanager",
@@ -20,9 +20,9 @@
   "author": "Angel Rodriguez <xangelrodriguez99@gmail.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/purpleboost/authkeys/issues"
+    "url": "https://github.com/fireboost/authkeys/issues"
   },
-  "homepage": "https://github.com/purpleboost/authkeys#readme",
+  "homepage": "https://fireboost.co/docs/security/authkeys",
   "dependencies": {
     "app-root-path": "^3.0.0",
     "colors": "^1.4.0",
