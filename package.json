@@ -9,7 +9,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/fireboost/authkeys.git"
+    "url": "git+https://github.com/uselessobject/authkeys.git"
   },
   "keywords": [
     "keymanager",
@@ -20,9 +20,9 @@
   "author": "Angel Rodriguez <xangelrodriguez99@gmail.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/fireboost/authkeys/issues"
+    "url": "https://github.com/uselessobject/authkeys/issues"
   },
-  "homepage": "https://fireboost.co/docs/security/authkeys",
+  "homepage": "https://github.com/uselessobject/authkeys",
   "dependencies": {
     "app-root-path": "^3.0.0",
     "colors": "^1.4.0",

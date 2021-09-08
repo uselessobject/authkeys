@@ -27,7 +27,7 @@ Table of Contents
     * 4.1.1. [Query Parameter](#query-parameter)
     * 4.1.2. [Body Property](#body-property)
     * 4.1.3. [Authorization Header](#authorization-header)
-* 5. [API Documentation](#api-documentation)
+* 5. [Full API Documentation](#api-documentation)
 
 ##  1. <a name='getting-started'></a>Getting Started
 
@@ -381,6 +381,6 @@ curl http://localhost:3000/API/users
 
 ***
 
-##  5. <a name='api-documentation'></a>API Documentation
+##  5. <a name='api-documentation'></a>Full API Documentation
 
 To see full API documentation please visit the [github repository](https://github.com/uselessobject/authkeys/blob/main/API.md).
