@@ -383,4 +383,4 @@ curl http://localhost:3000/API/users
 
 ##  5. <a name='api-documentation'></a>Full API Documentation
 
-To see full API documentation please visit the [github repository](https://github.com/uselessobject/authkeys/blob/main/API.md).
+To see full API documentation please open the API.md file in the official [github repository](https://github.com/uselessobject/authkeys/blob/main/API.md).
