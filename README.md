@@ -1,7 +1,3 @@
----
-sidebar_position: 1
----
-
 # 🔑 AuthKeys
 
 ![version](https://img.shields.io/badge/Version-v0.2.4-red)
@@ -9,10 +5,31 @@ sidebar_position: 1
 
 Create API & Server keys with Permissions and CustomData
 
-This tool was designed to improve permissions management, especially in HTTP and database tasks that works with url-paths to access to the stored data.
+This tool was designed to improve permissions management, especially in HTTP and database tasks that works with *url-paths* to access to the stored data.
 
+***
 
-## Getting Started
+Table of Contents
+
+* 1. [Getting Started](#getting-started)
+  * 1.1. [Creating a Key](#creating-a-key)
+  * 1.2. [Custom Tokens](#custom-tokens)
+  * 1.3. [Updating Secret](#updating-secret)
+  * 1.4. [Adding CustomData](#adding-customdata)
+* 2. [Saving & Loading Keys](#saving-&-loading-keys)
+  * 2.1. [Local Storage](#local-storage)
+  * 2.2. [Cloud Storage](#cloud-storage)
+* 3. [Permissions](#permissions)
+  * 3.1. [Managing Permissions](#managing-permissions)
+  * 3.2. [Check Permissions](#check-permissions)
+* 4. [Express Integration](#express-integration)
+  * 4.1. [Tokens in Client-Side](#tokens-in-client-side)
+    * 4.1.1. [Query Parameter](#query-parameter)
+    * 4.1.2. [Body Property](#body-property)
+    * 4.1.3. [Authorization Header](#authorization-header)
+* 5. [API Documentation](#api-documentation)
+
+##  1. <a name='getting-started'></a>Getting Started
 
 Let's create our first auth-key, but first, we need to install the package in our current *Node.js* project.
 
@@ -20,7 +37,7 @@ Let's create our first auth-key, but first, we need to install the package in ou
 npm install --save authkeys
 ```
 
-### Creating a Key
+###  1.1. <a name='creating-a-key'></a>Creating a Key
 
 Is really easy to make a new key to start adding permissions and custom-data (json).
 Just import the *AuthKey* class from the package or use the *createKey( )* method which uses the same parameters as the class.
@@ -37,7 +54,7 @@ import { createKey, AuthKey } from "authkeys" ;
 let key = createKey( ) ;
 ```
 
-By default, the class constructor will create a token **(sha256 hash)** based in a random *secret* string and also it will add a random 32-length *public* password.
+By default, the class constructor will create a token **(sha256 hash)** based in a random *secret* string and also it will add a random 32-length *public* password (can be useful or not, but I just added it to prevent).
 
 ```javascript title="Result"
 AuthKey {
@@ -49,7 +66,7 @@ AuthKey {
 } ;
 ```
 
-### Custom Tokens
+###  1.2. <a name='custom-tokens'></a>Custom Tokens
 
 The *token* is the value used to identify your keys in a database.
 In this way, you can use the token to make HTTP calls in a server, obtaining the `AuthKey` instance by searching its data in your database using the token as an ID.
@@ -69,7 +86,7 @@ let key2 = createKey( "i-love-pizza", "sha256" ) ;
 console.log( key1.token, key2.token ) ;
 ```
 
-<details><summary>See Algorithms List</summary>
+<details><summary>See Algorithms List (from crypto module)</summary>
 <p>
 
 ```shell title="Current list obtained from crypto module"
@@ -139,7 +156,7 @@ whirlpool
 
 ***
 
-### Updating Secret
+###  1.3. <a name='updating-secret'></a>Updating Secret
 
 Maybe you want to reset your users' API keys without deleting permissions, so you can change the `secret` property and then call `updateToken( )`.
 
@@ -159,7 +176,7 @@ const newMD5Token = key.updateToken( "md5" ) ;
 key.public = "new-public-password" ; 
 ```
 
-### Adding CustomData
+###  1.4. <a name='adding-customdata'></a>Adding CustomData
 
 *CustomData* is just a little feature to store **simple data** (strings, numbers, booleans or even objects) in our keys.
 
@@ -174,9 +191,9 @@ var wantPizza = key.data( "pizza" ) ;
 
 ***
 
-## Saving & Loading Keys
+##  2. <a name='saving-&-loading-keys'></a>Saving & Loading Keys
 
-### Local Storage
+###  2.1. <a name='local-storage'></a>Local Storage
 
 Save your current key data (hexadecimal) in your drive and then load it with all its permissions and custom-data.
 
@@ -193,7 +210,7 @@ let key = AuthKey.load( "./api.key" ) ;
 let key = loadKey( "./api.key" ) ;
 ```
 
-### Cloud Storage
+###  2.2. <a name='cloud-storage'></a>Cloud Storage
 
 Sometimes we will need to save the key in a cloud-storage or database, so we can get a **JSON** and then parse it into a new *AuthKey*.
 
@@ -210,14 +227,14 @@ let key = parseKey( obj ) ;
 
 ***
 
-## Permissions
+##  3. <a name='permissions'></a>Permissions
 
 Permissions are a bit more difficult, that's why we set it aside in a separate section.
 You just need to understand that permissions work based on *url-paths* or *IDs*.
 
 **Note:** The *AuthKey* permissions structure are useful for HTTP servers, but they aren't exclusive for that.
 
-### Managing Permissions
+###  3.1. <a name='managing-permissions'></a>Managing Permissions
 
 You can set multiple permissions using url-patterns with `permission( pattern<string>, permissions-action<string> )` method.
 Just add `+` or `-` symbol at the beginning of the string and then add the first letter of each type of permission.
@@ -247,7 +264,7 @@ If you will use AuthKeys with Express.js, don't forget to add a slash (`/`) at t
 
 :::
 
-### Check Permissions
+###  3.2. <a name='check-permissions'></a>Check Permissions
 
 It's really easy to check all available permissions (even those that have not been added), just remove the **symbol (+/-)** from the string and use only one permission type.
 Also you can use `checkPermissions(pattern<string>)` method instead to return all permissions in an object.
@@ -268,7 +285,7 @@ if( key.checkPermissions( "users/blitzcrank" ).read === true ) {
 
 ***
 
-## Express Integration
+##  4. <a name='express-integration'></a>Express Integration
 
 The `AuthKey` middleware will allow you to have a direct access to the permissions of all your keys and their data in **every HTTP call in your Express.js** server, 
 using an optional cache system to save time and resources. 
@@ -333,19 +350,19 @@ app.listen( port, ( ) => {
 /* Go to http://localhost:3000/API/users?token=${ token-value } */
 ```
 
-### Tokens in Client-Side
+###  4.1. <a name='tokens-in-client-side'></a>Tokens in Client-Side
 
 You can set the token in your HTTP requests in 3 different ways: *Query Parameter*, *Body Property* and *Authorization Header*.
 The **middleware** will automatically search all this parameters (in the previous order) in every request.
 
-#### Query Parameter
+####  4.1.1. <a name='query-parameter'></a>Query Parameter
 Just add the `token` query parameter to the URL.
 
 ```shell
 curl http://localhost:3000/API/users?token=TOKEN_VALUE
 ```
 
-#### Body Property
+####  4.1.2. <a name='body-property'></a>Body Property
 Add the `token` property to your body-data.
 
 ```shell
@@ -355,7 +372,7 @@ curl --header "Content-Type: application/json" \
   http://localhost:3000/API/users
 ```
 
-#### Authorization Header
+####  4.1.3. <a name='authorization-header'></a>Authorization Header
 
 ```shell
 curl http://localhost:3000/API/users
@@ -364,6 +381,6 @@ curl http://localhost:3000/API/users
 
 ***
 
-## API Documentation
+##  5. <a name='api-documentation'></a>API Documentation
 
-To see full API documentation please visit the [github repository](https://github.com/fireboost/authkeys/blob/main/API.md).
+To see full API documentation please visit the [github repository](https://github.com/uselessobject/authkeys/blob/main/API.md).
