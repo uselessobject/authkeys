@@ -1,5 +1,5 @@
 {
-  "name": "@fireboost/authkeys",
+  "name": "authkeys",
   "version": "0.2.4",
   "description": "🗝️ Create API & Server keys with Permissions and CustomData 🗝️",
   "main": "index.js",
